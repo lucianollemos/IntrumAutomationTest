@@ -8,7 +8,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class ContactUsPage {
 
-	WebDriver driver;
+	protected WebDriver driver;
 	WebDriverWait wait;
 
 	public ContactUsPage (WebDriver driver) {
@@ -16,13 +16,22 @@ public class ContactUsPage {
 		wait = new WebDriverWait(driver, 5);
 	}
 
-	By label_contact_us = By.xpath("//div[@class='header-container']/h1/font/font");
-	By btn_in_shape = By.xpath("//a[@data-popup-template='popup_ArticlePage']"); //id seems to be dynamic for this object
-	By btn_reject_all_cookie = By.id("onetrust-reject-all-handler");
+	//private By label_contact_us = By.xpath("//div[@class='header-container']/h1/font/font");
+	private By btn_in_shape = By.xpath("//a[@data-popup-template='popup_ArticlePage']"); //id seems to be dynamic for this object
+	private By btn_reject_all_cookie = By.id("onetrust-reject-all-handler");
 
 	public void navigateToContactUsPage() {
+		WebElement rejectCookieBtn;
 		driver.navigate().to("https://www.intrum.lv/saistibu-parvaldisana/sazinieties-ar-mums/");
-		rejectAllCookies(driver.findElement(btn_reject_all_cookie));
+		
+		try {
+			Thread.sleep(5000);
+			rejectCookieBtn = driver.findElement(btn_reject_all_cookie);
+			if (rejectCookieBtn.isDisplayed() && rejectCookieBtn.isEnabled())
+				rejectAllCookies(rejectCookieBtn);	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void openContactUsForm(){
@@ -34,12 +43,7 @@ public class ContactUsPage {
 	}
 
 	public void rejectAllCookies(WebElement webElement){
-		try {
-			Thread.sleep(5000);
-			webElement.click();
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
+		webElement.click();
 	}
 
 	public boolean verifyIfComponentIsReady(WebElement webElement){
