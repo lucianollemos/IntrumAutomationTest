@@ -1,4 +1,4 @@
-issue found in the contact form (I need to supose some requirements):
+issues found in the contact form (I need to supose some requirements):
 
 - email format validation doesn't exist (in frontend at least);
 - code number format validation doesn't exist (in frontend at leats);
