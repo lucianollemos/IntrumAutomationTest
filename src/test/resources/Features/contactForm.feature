@@ -4,17 +4,19 @@
 
 Feature: Testing contact form
 
-#  Scenario Outline: Check successful contact submission
+  Scenario Outline: Check successful contact submission
   
-#    Given user on contact form
-#    When user provides valid value to fields <name>, <personal_code>, <case_number>, <phone>, <email>, <address> and <objection>
-#    And clicks on submit button
-#    Then messege sent succesfully
+  	Given user on contact form
+		And user provides valid value to fields <name>, <personal_code>, <case_number>, <phone>, <email>, <address>, <objection> and <answerType>	
+		When clicks on submit button
+		Then messege sent succesfully
     
-#    Examples:
-#			| name | personal_code | case_number | phone | email | address | objection |
-#			|  |  |  |  |  |  |  |
-			
+   Examples:
+			| name | personal_code | case_number | phone | email | address | objection | answerType |
+			| Name sample | personal code sample | 12345 | 00 000-000-000 | email@sample.com | address sample | objection sample | E-pasts |
+			| Name sample | personal code sample | 12345 | 00 000-000-000 | email@sample.com | address sample | objection sample | Pasts |
+	
+	@run		
 	Scenario Outline: Check validation of required fields
 	
 		Given user on contact form
@@ -24,3 +26,15 @@ Feature: Testing contact form
     Examples:
     	| message |
     	| Lūdzu, aizpildiet lauku |
+  
+  @run
+  Scenario Outline: Check format validation on email field
+  
+  	Given user on contact form
+  	And user insert an invalid <email>
+  	When clicks on submit button
+  	Then Validation <message> should be shown for email field
+  	
+  	Examples:
+  		| email | message |
+  		| invalidemail.com | some validation message |

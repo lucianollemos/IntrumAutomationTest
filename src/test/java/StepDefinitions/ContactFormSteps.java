@@ -3,6 +3,8 @@ package StepDefinitions;
 import static org.junit.Assert.assertEquals;
 
 import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import io.cucumber.java.en.*;
@@ -27,43 +29,38 @@ public class ContactFormSteps {
 
 	}
 
-	@When("user provides valid value to fields ")
-	public void user_fields() {
+	@Given("^user provides valid value to fields (.*), (.*), (.*), (.*), (.*), (.*), (.*) and (.*)$")
+	public void user_provides_valid_value_to_fields(String name, String personalCode, Integer caseNumber, String phone, String email, String address, String objection, String AnswerType) {
 		contactFormPage = new ContactFormPage(driver);
 		
-		contactFormPage.enterName("");
-		contactFormPage.enterPersonalCode("");
-		contactFormPage.enterCaseNumber("");
-		contactFormPage.enterPhone("");
-		contactFormPage.enterEmail("");
-		contactFormPage.enterAddress("");
-		contactFormPage.enterObjection("");
-	}
+		contactFormPage.waitPageLoad(3000);
+		
+		contactFormPage.enterName(name);
+		contactFormPage.enterPersonalCode(personalCode);
+		contactFormPage.enterCaseNumber(caseNumber);
+		contactFormPage.enterPhone(phone);
+		contactFormPage.enterEmail(email);
+		contactFormPage.enterAddress(address);
+		contactFormPage.enterObjection(objection);
+		contactFormPage.selectDropboxItemByText(AnswerType);
+}
 	
 	@When("user clicks on submit button without provide value to required fields")
 	public void user_clicks_on_submit_button_without_provide_value_to_required_fields() {
-		try {
-			contactFormPage = new ContactFormPage(driver);
-			Thread.sleep(3000);
-			contactFormPage.clickSubmitButton();	
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		contactFormPage = new ContactFormPage(driver);
+		waitAndClicksubmitBtn(contactFormPage);
 	}
 
 	@And("clicks on Submit button")
 	public void clicks_on_submit_button() {
-		try {
-
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
+		contactFormPage = new ContactFormPage(driver);
+		waitAndClicksubmitBtn(contactFormPage);
 	}
 
 	@Then("Messege sent succesfully")
 	public void messege_sent_succesfully() {
-		driver.close();
-		driver.quit();
+		//Code to verify and validate a successful submission message
+		afterTest(driver);
 	}
 	
 	@Then("^Validation (.*) should be shown for every required field$")
@@ -78,17 +75,46 @@ public class ContactFormSteps {
 		assertEquals(errorMessage, contactFormPage.getLabelInputObjectionErrorText());
 		assertEquals(errorMessage, contactFormPage.getLabelInputAnswerTyoeErrorText());
 		
-		//driver.close();
-		//driver.quit();
+		afterTest(driver);
 	}
+
+	
+	@And("^user insert an invalid (.*)$")
+	public void user_insert_an_invalid_invalidemail_com(String email) {
+		contactFormPage = new ContactFormPage(driver);
+		contactFormPage.waitPageLoad(3000);
+		contactFormPage.enterEmail(email);
+	}
+	
+	
+	@Then("Validation (.*) should be shown for email field")
+	public void validation_some_validation_message_should_be_shown_for_email_field(String message) {
+		try {
+			assertEquals(message, contactFormPage.getLabelInputEmailErrorText());
+		} catch (NoSuchElementException e) {
+			System.out.println("Validation message not displayed");
+		}finally {
+			afterTest(driver);			
+		}	
+	}
+	
 
 	public WebDriver initDriver(WebDriver diver) {
 		System .setProperty("webdriver.chrome.driver", projectPath+"/src/test/resources/drivers/chromedriver.exe");
 		driver = new ChromeDriver();
 		driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
-
+		
 		return driver;
 	}
-
+	
+	public void afterTest(WebDriver driver) {
+		driver.close();
+		driver.quit();
+	}
+	
+	public void waitAndClicksubmitBtn(ContactFormPage contactFormPage) {
+		contactFormPage.waitPageLoad(3000);
+		contactFormPage.clickSubmitButton();
+	}
 }

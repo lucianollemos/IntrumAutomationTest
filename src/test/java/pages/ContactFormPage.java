@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class ContactFormPage {
@@ -23,6 +24,7 @@ public class ContactFormPage {
 	private By txt_input_email = By.id("c9247843-f302-4fa6-a1b4-2a75b06a95ee");
 	private By txt_input_address = By.id("6bbc463e-6ce2-4f52-de13-4777aef7dce7");
 	private By txt_input_objection = By.id("bdd7ddc6-ca27-4f20-9fbe-f0264f3c2f3a");
+	private By select_answer_type = By.id("e9a9505d-196d-4bac-8d8f-f8a3f406934d");
 	private By btn_submit = By.cssSelector("input[type='submit']");
 	private By label_input_name_error = By.id("71a2bb97-3a3f-434b-e36d-344d0907e7b9-error");
 	private By label_input_personal_code_error = By.id("0348625f-721d-430f-f61b-3ea1a44df7b6-error");
@@ -47,9 +49,9 @@ public class ContactFormPage {
 		driver.findElement(txt_input_personal_code).sendKeys(personalCode);
 	}
 	
-	public void enterCaseNumber(String caseNumber) {
+	public void enterCaseNumber(Integer caseNumber) {
 		WaitElementVisibility(txt_input_case_number);
-		driver.findElement(txt_input_case_number).sendKeys(caseNumber);
+		driver.findElement(txt_input_case_number).sendKeys(caseNumber.toString());
 	}
 	
 	public void enterPhone(String phone) {
@@ -107,9 +109,23 @@ public class ContactFormPage {
 		return driver.findElement(label_input_objection_error).getText();
 	}
 	
+	public void selectDropboxItemByText(String answerTypeText) {
+		WaitElementVisibility(select_answer_type);
+		Select selectAnswerType = new Select(driver.findElement(select_answer_type));
+		selectAnswerType.selectByVisibleText(answerTypeText);
+	}
+	
+	public void waitPageLoad(int miliseconds) {
+		try {
+			Thread.sleep(miliseconds);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public String getLabelInputAnswerTyoeErrorText(){
 		WaitElementVisibility(label_input_answer_type_error);
 		return driver.findElement(label_input_answer_type_error).getText();
-	}	
+	}
 
 }

@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<testsuite errors="0" failures="0" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="1" time="17.069">
-    <testcase classname="Testing contact form" name="Check validation of required fields" time="16.966">
+<testsuite errors="0" failures="1" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="2" time="34.221">
+    <testcase classname="Testing contact form" name="Check validation of required fields" time="17.788">
         <system-out><![CDATA[Given user on contact form..................................................passed
 When user clicks on submit button without provide value to required fields..passed
 Then Validation Lūdzu, aizpildiet lauku should be shown for every required field.passed
 ]]></system-out>
+    </testcase>
+    <testcase classname="Testing contact form" name="Check format validation on email field" time="16.292">
+        <failure message="The scenario has pending or undefined step(s)" type="java.lang.Exception"><![CDATA[Given user on contact form..................................................passed
+And user insert an invalid invalidemail.com.................................passed
+When clicks on submit button................................................undefined
+Then Validation some validation message should be shown for email field.....skipped
+]]></failure>
     </testcase>
 </testsuite>
