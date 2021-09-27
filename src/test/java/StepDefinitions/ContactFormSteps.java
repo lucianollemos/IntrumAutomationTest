@@ -30,7 +30,7 @@ public class ContactFormSteps {
 	}
 
 	@Given("^user provides valid value to fields (.*), (.*), (.*), (.*), (.*), (.*), (.*) and (.*)$")
-	public void user_provides_valid_value_to_fields(String name, String personalCode, Integer caseNumber, String phone, String email, String address, String objection, String AnswerType) {
+	public void user_provides_valid_value_to_fields(String name, String personalCode, String caseNumber, String phone, String email, String address, String objection, String AnswerType) {
 		contactFormPage = new ContactFormPage(driver);
 		
 		contactFormPage.waitPageLoad(3000);
@@ -51,7 +51,7 @@ public class ContactFormSteps {
 		waitAndClicksubmitBtn(contactFormPage);
 	}
 
-	@And("clicks on Submit button")
+	@When("clicks on submit button")
 	public void clicks_on_submit_button() {
 		contactFormPage = new ContactFormPage(driver);
 		waitAndClicksubmitBtn(contactFormPage);
@@ -79,20 +79,38 @@ public class ContactFormSteps {
 	}
 
 	
-	@And("^user insert an invalid (.*)$")
-	public void user_insert_an_invalid_invalidemail_com(String email) {
+	@And("^user inserts an invalid (.*) on email field$")
+	public void user_inserts_an_invalid_invalidemail_com(String email) {
 		contactFormPage = new ContactFormPage(driver);
 		contactFormPage.waitPageLoad(3000);
 		contactFormPage.enterEmail(email);
 	}
 	
+	@And("^user inserts an invalid (.*) on case number field$")
+	public void user_inserts_invalid_case_number(String caseNumber) {
+		contactFormPage = new ContactFormPage(driver);
+		contactFormPage.waitPageLoad(3000);
+		contactFormPage.enterCaseNumber(caseNumber);
+		
+	}
 	
-	@Then("Validation (.*) should be shown for email field")
+	@Then("^Validation (.*) should be shown for email field$")
 	public void validation_some_validation_message_should_be_shown_for_email_field(String message) {
 		try {
 			assertEquals(message, contactFormPage.getLabelInputEmailErrorText());
 		} catch (NoSuchElementException e) {
-			System.out.println("Validation message not displayed");
+			Assert.fail("No validation message shown");
+		}finally {
+			afterTest(driver);			
+		}	
+	}
+	
+	@Then("^Validation (.*) should be shown for case number field$")
+	public void validation_some_validation_message_should_be_shown_for_case_number_field(String message) {
+		try {
+			assertEquals(message, contactFormPage.getLabelInputCaseNumberErrorText());
+		} catch (NoSuchElementException e) {
+			Assert.fail("No validation message shown");
 		}finally {
 			afterTest(driver);			
 		}	

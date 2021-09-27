@@ -31,10 +31,22 @@ Feature: Testing contact form
   Scenario Outline: Check format validation on email field
   
   	Given user on contact form
-  	And user insert an invalid <email>
+  	And user inserts an invalid <email> on email field
   	When clicks on submit button
   	Then Validation <message> should be shown for email field
   	
   	Examples:
   		| email | message |
   		| invalidemail.com | some validation message |
+  		
+  @run
+  Scenario Outline: Check format validation on case number field
+  
+  	Given user on contact form
+  	And user inserts an invalid <case_number> on case number field
+  	When clicks on submit button
+  	Then Validation <message> should be shown for case number field
+  	
+  	Examples:
+  		| case_number | message |
+  		| invalidnumber | some validation message |

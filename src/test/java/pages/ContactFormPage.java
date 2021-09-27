@@ -28,6 +28,7 @@ public class ContactFormPage {
 	private By btn_submit = By.cssSelector("input[type='submit']");
 	private By label_input_name_error = By.id("71a2bb97-3a3f-434b-e36d-344d0907e7b9-error");
 	private By label_input_personal_code_error = By.id("0348625f-721d-430f-f61b-3ea1a44df7b6-error");
+	private By label_input_case_number_error = By.id("a6c1035f-7675-445b-ab1f-186d4481692f-error");
 	private By label_input_phone_error = By.id("ffc40b29-dfa8-42d8-d33a-1602ef5a4622-error");
 	private By label_input_email_error = By.id("c9247843-f302-4fa6-a1b4-2a75b06a95ee-error");
 	private By label_input_address_error = By.id("6bbc463e-6ce2-4f52-de13-4777aef7dce7-error");
@@ -49,7 +50,7 @@ public class ContactFormPage {
 		driver.findElement(txt_input_personal_code).sendKeys(personalCode);
 	}
 	
-	public void enterCaseNumber(Integer caseNumber) {
+	public void enterCaseNumber(String caseNumber) {
 		WaitElementVisibility(txt_input_case_number);
 		driver.findElement(txt_input_case_number).sendKeys(caseNumber.toString());
 	}
@@ -87,6 +88,11 @@ public class ContactFormPage {
 	public String getLabelInputPersonalCodeErrorText(){
 		WaitElementVisibility(label_input_personal_code_error);
 		return driver.findElement(label_input_personal_code_error).getText();
+	}
+	
+	public String getLabelInputCaseNumberErrorText(){
+		WaitElementVisibility(label_input_case_number_error);
+		return driver.findElement(label_input_case_number_error).getText();
 	}
 	
 	public String getLabelInputPersonalPhoneText(){
